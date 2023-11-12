@@ -1,0 +1,163 @@
+#include<string>
+#include<iostream>
+#include<iomanip>
+class Zbor{
+  private:
+  std::string orasPlecare;
+  std::string orasSosire;
+  int oraPlecare;
+  int minutPlecare;
+  int oraSosire;
+  int minutSosire;
+  public:
+  Zbor(std::string orasPlecare="", std::string orasSosire="", int oraPlecare=0, int minutPlecare=0, int oraSosire=0,int minutSosire=0):
+   orasPlecare(orasPlecare), orasSosire(orasSosire), oraPlecare(oraPlecare), minutPlecare(minutPlecare),oraSosire(oraSosire),minutSosire(minutSosire){}
+  void setorasPlecare(std::string orasPlecare){
+      this->orasPlecare=orasPlecare;
+     }
+  std::string getorasPlecare(){
+      return this->orasPlecare;
+     }
+      void setorasSosire(std::string orasSosire){
+      this->orasSosire=orasSosire;
+     }
+  std::string getorasSosire(){
+      return this->orasSosire;
+        }
+    void setoraPlecare(int oraPlecare){
+            this->oraPlecare = oraPlecare;
+        }
+        int getoraPlecare(){
+            return this->oraPlecare;
+        }
+         void setminutPlecare(int minutPlecare){
+            this->minutPlecare = minutPlecare;
+        }
+          int getminutPlecare(){
+            return this->minutPlecare;
+        }
+           void setoraSosire(int oraSosire){
+            this->oraSosire = oraSosire;
+        }
+           int getoraSosire(){
+            return this->oraSosire;
+        }
+         void setminutSosire(int minutSosire){
+            this->minutSosire = minutSosire;
+        }
+        
+        int getminutSosire(){
+            return this->minutSosire;
+        }
+        void display(){
+            std::cout<<orasPlecare<<" - "<<orasSosire<<"\n";
+            std::cout<<oraPlecare<<":"<<minutPlecare<<" - "<<oraSosire<<":"<<minutSosire<<"\n";
+        }
+};
+class Aeroport{
+  private:
+  int nrzboruri;
+  int capacitate;
+  Zbor z[20];
+  public:
+  Aeroport(int capacitate): capacitate(capacitate), nrzboruri(0){}
+  void insert_zboruri(std::string orasPlecare, std::string orasSosire, int oraPlecare, int minutPlecare, int oraSosire,int minutSosire){
+      z[nrzboruri].setorasPlecare(orasPlecare);
+        z[nrzboruri].setorasSosire(orasSosire);
+          z[nrzboruri].setoraPlecare(oraPlecare);
+            z[nrzboruri].setminutPlecare(minutPlecare);
+              z[nrzboruri].setoraSosire(oraSosire);
+                z[nrzboruri].setminutSosire(minutSosire);
+        nrzboruri++;}
+    void afisare(int val){
+        for(int i=0;i<nrzboruri;i++){
+            if(val==0) {
+                if(z[i].getorasPlecare()=="Bucuresti")
+                z[i].display();
+            }
+            if(val==1){
+                if(z[i].getorasSosire()=="Bucuresti")
+                z[i].display();
+            }
+        }
+    }
+void ver_timp(int o1, int m1, int o2, int m2){
+    long int sos1=o1*60+m1;
+    long int sos2=o2*60+m2;
+    for(int i=0;i<nrzboruri;i++){
+        long int oraPlecare=z[i].getoraPlecare()*60+z[i].getminutPlecare();
+        long int oraSosire=z[i].getoraPlecare()*60+z[i].getminutPlecare();
+        if(z[i].getorasPlecare()=="Bucuresti" && oraPlecare>=sos1&&oraSosire<=sos2)z[i].display();
+    }
+}
+void viteza(int distanta, int index){
+    long int timp=((z[index].getoraSosire()*60+z[index].getminutSosire())-(z[index].getoraPlecare()*60+z[index].getminutPlecare()));
+    float viteza=((float)distanta*60)/(float)timp;
+    z[index].display();
+    std::cout<<std::fixed<<std::setprecision(2);
+    std::cout<<viteza<<"\n";
+}
+void profit(int distanta, int index){
+    float delta_t;
+    long int timp=((z[index].getoraSosire()*60+z[index].getminutSosire())-(z[index].getoraPlecare()*60+z[index].getminutPlecare()));
+    delta_t=(float)timp/60;
+    float consum=((float)delta_t*10000);
+    float pret_bilet=60*(float)distanta;
+    std::cout<<z[index].getorasPlecare()<<" "<<"-"<<" "<<z[index].getorasSosire()<<"\n";
+std::cout<<std::fixed<<std::setprecision(2);
+std::cout<<(float)pret_bilet-consum<<"\n";
+    
+}
+
+};
+int main(){
+    std::string orasPlecare;
+  std::string orasSosire;
+  int oraPlecare;
+  int minutPlecare;
+  int oraSosire;
+  int minutSosire;
+  int val;
+  int comanda;
+  int n;
+  Aeroport a(n);
+  std::cin>>n;
+  for(int i=0;i<n;i++){
+      std::cin>>orasPlecare;
+      std::cin>>orasSosire;
+      std::cin>>oraPlecare;
+      std::cin>>minutPlecare;
+      std::cin>>oraSosire;
+      std::cin>>minutSosire;
+    a.insert_zboruri(orasPlecare, orasSosire, oraPlecare, minutPlecare, oraSosire, minutSosire);
+  }
+  std::cin>>comanda;
+  switch(comanda){
+      case 1:{
+          int val;
+          std::cin>>val;
+          a.afisare(val);
+      }break;
+
+case 2:{
+    int o1,m1,o2,m2;
+    std::cin>>o1>>m1>>o2>>m2;
+    a.ver_timp(o1,m1,o2,m2);
+}break;
+case 3:{
+    int x[20];
+    for(int i=0;i<n;i++){
+        std::cin>>x[i];
+        a.viteza(x[i], i);
+    }
+}break;
+case 4:{
+    int v[20];
+    for(int i=0;i<n;i++){
+        std::cin>>v[i];
+        a.profit(v[i],i);
+    }
+}break;
+}
+return 0;
+}
